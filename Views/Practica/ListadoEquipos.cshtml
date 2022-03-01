@@ -1,0 +1,72 @@
+﻿@model PracticaMigracion.ViewModels.ListadoDeEquipos
+
+@{
+    ViewData["Title"] = "ListadoEquipos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mb-3 mt-5">
+    <h3>
+        Listado de Equipos
+    </h3>
+
+    <a asp-controller="Practica" asp-action="AgregarEquipos" class="btn btn-success rounded-pill shadow">
+        Agregar Equipo
+    </a>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ver
+                </th>
+                <th>
+                    Nombre Equipo
+                </th>
+                <th>
+                    País
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Fecha de creación
+                </th>
+                <th>
+                    Acciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListadoEquipos)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Detalle", "DetalleEquipo", "Practica", new { id = item.Id },
+                       new { @class = "badge badge-success p-2 rounded-pill" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pais)
+                    </td>
+                    <td>
+                        @(item.Estado == true ? "Activo" : "Inactivo" )
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaDeCreacion)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "EditarEquipo", "Practica", new { id = item.Id },
+                         new { @class = "badge badge-warning p-2 rounded-pill" })
+                       
+                        @Html.ActionLink("Eliminar", "EliminarEquipo", "Practica", new { id = item.Id },
+                        new { @class = "badge badge-danger p-2 rounded-pill" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

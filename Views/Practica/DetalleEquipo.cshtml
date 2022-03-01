@@ -1,0 +1,227 @@
+﻿@model PracticaMigracion.ViewModels.DetalleEquipo
+
+@{
+    ViewData["Title"] = "DetalleEquipo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="row mb-3">
+    <div class="col-12 col-md-6">
+        <h4>
+            Equipo:
+            <small class="badge badge-secondary rounded-pill font-weight-bold text-capitalize ">
+                @Model.NombreEquipo
+            </small>
+        </h4>
+        <h6>
+            ID: <small class="text-success font-weight-bold mr-1">@Model.Id</small>
+            Estado: <small class="text-success font-weight-bold"> @(Model.Estado?"Activo":"Inactivo")</small>
+        </h6>
+        <select class="form-control col-6 rounded-pill mt-3" name="estado_jugador" id="estado_jugador">
+            <option value="" selected disabled hidden>Filtrar tabla</option>
+            <option value="Todos">Todos</option>
+            <option value="Activo">Activo</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Agente Libre">Agente Libre</option>
+            <option value="No definido">No Definido</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
+        <a href="#" class="btn btn-success mr-2 rounded-pill shadow p-2 font-weight-bold text-decoration-none"
+           data-toggle="modal" data-target="#AgregarJugador">
+            Agregar Jugador
+        </a>
+        <a asp-controller="Practica" asp-action="ListadoEquipos"
+           class="btn btn-secondary rounded-pill shadow p-2  text-decoration-none">
+            Volver a la lista
+        </a>
+    </div>
+</div>
+
+<div>
+    <table id="tbl_jugadores" class="table">
+        <thead>
+            <tr id="thead">
+                <th>Estado</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Sexo</th>
+                <th>Pasaporte</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Nombre Equipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListadoJugadores)
+            {
+                <tr data-estado="@item.Estado">
+                    <td>
+                        <a href="#" onclick="cambiarEstado('@item.Nombre @item.Apellido', @item.Id, '@item.Estado');" 
+                           class="badge badge-success rounded-pill p-2 font-weight-bold text-decoration-none"
+                           data-toggle="modal" data-target="#cambiarEstado">
+                            Cambiar Estado
+                        </a>
+                    </td>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Sexo</td>
+                    <td>@item.Pasaporte</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Estado</td>
+                    <td>@item.NombreEquipo</td>
+                    <td>
+                        @Html.ActionLink("Editar", "EditarJugador", "Practica", new { id = item.Id },
+                            new { @class = "badge badge-warning p-2 rounded-pill" })
+                        @Html.ActionLink("Remover", "RemoverJugadorDelEquipo", "Practica", 
+                            new { id_jugador = item.Id, id_equipo = Model.Id },
+                            new { @class = "badge badge-danger p-2 rounded-pill" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal Agregar Jugador -->
+<div class="modal fade" id="AgregarJugador" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0 mb-0 pb-0">
+                <h5 class="modal-title">Agregar Jugador</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body border-0 pt-0">
+                <p class="pt-0 mt-0 small">
+                    Selecciona un jugador y agregalo al grupo
+                </p>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre Completo</th>
+                                <th>Sexo</th>
+                                <th>Fecha de nacimiento</th>
+                                <th>Pasaporte</th>
+                                <th>Dirección</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ListadoAgregarJugadores)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Nombre @item.Apellido</td>
+                                    <td>@item.Sexo</td>
+                                    <td>@item.FechaNacimiento</td>
+                                    <td>@item.Pasaporte</td>
+                                    <td>@item.Direccion</td>
+                                    <td>@item.Estado</td>
+                                    <td>
+                                        @Html.ActionLink("Agregar al Grupo", "AgregarJugadorAlGrupo", "Practica",
+                                            new { id_jugador = item.Id, id_equipo = Model.Id },
+                                            new { @class = "badge badge-warning p-2 rounded-pill" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Cambiar Estado -->
+<div class="modal fade" id="cambiarEstado" data-backdrop="static" data-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0 mb-0">
+                <h5 class="modal-title mb-0 pb-0">
+                    Cambiar Estado
+                </h5>
+               
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <p class="small text-muted  pt-0 pb-0">
+                    Selecciona el estado del jugador
+                </p>
+                <form asp-controller="Practica" asp-action="CambiarEstadoJugador" method="post">
+                    <div class="row pl-5 pt-4 pb-4">
+                        <h6 class="mr-3">
+                            Nombre: <br />
+                            <span class="text-success" id="nombre_jugador"></span>
+                        </h6>
+
+                        <select class="form-control col-6 rounded-pill" name="estado_jugador" id="estado_jugador">
+                            <option value="" selected disabled hidden>Selecciona un estado</option>
+                            <option value="Agente Libre">Agente Libre</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="No definido">No Definido</option>
+                        </select>
+                    </div>
+                    <input class="form-control" type="hidden" name="id_jugador" id="id_jugador" value="" />
+                    <input class="form-control" type="hidden" name="id_equipo" id="id_equipo" value="@Model.Id" />
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success rounded-pill">Cambiar Estado</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let nombre_jugador = document.querySelector("#nombre_jugador");
+    let id_jugador = document.querySelector("#id_jugador");
+    let estado_jugador = document.querySelector("#estado_jugador");
+
+    const cambiarEstado = (nombre, id, estado) => {
+        nombre_jugador.textContent = nombre;
+        id_jugador.value = id;
+        var estados = estado_jugador.options;
+        for (estadof of estados) {
+            if (estadof.value == estado) {
+                estadof.selected = true;
+            }
+        }
+    };
+
+    (function () {
+        let table = document.querySelector("#tbl_jugadores");
+        let select = document.querySelector("#estado_jugador");
+        let table_head = document.querySelector("#thead");
+        select.addEventListener("change", function () {
+            for (row of table.rows) {
+                var trow = row.getAttribute("data-estado");
+                if (row.id != table_head.id) {
+                    if (select.value == 'Todos' || trow == select.value) {
+                        row.classList.remove("d-none");
+                    }
+                    else if (trow != select.value) {
+                        row.classList.add("d-none");
+                    }
+                }
+            }
+
+        })
+
+    })();
+</script>

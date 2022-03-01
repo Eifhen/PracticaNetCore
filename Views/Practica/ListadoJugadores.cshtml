@@ -1,0 +1,95 @@
+﻿@model PracticaMigracion.ViewModels.ListadoDeJugadores
+
+@{
+    ViewData["Title"] = "ListadoJugadores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mb-3 mt-5 row">
+    <div class="col-12 col-md-6">
+        <h3>
+            Listado de Jugadores
+        </h3>
+
+        <a asp-controller="Practica" asp-action="AgregarJugador" class="btn btn-success rounded-pill shadow">
+            Agregar Jugador
+        </a>
+    </div>
+    <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
+        <select class="form-control col-6 rounded-pill" name="estado_jugador" id="estado_jugador">
+            <option value="" selected disabled hidden>Filtrar tabla</option>
+            <option value="Todos">Todos</option>
+            <option value="Activo">Activo</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Agente Libre">Agente Libre</option>
+            <option value="No definido">No Definido</option>
+        </select>
+    </div>
+
+</div>
+<div>
+    <table id="tbl_jugadores"class="table">
+        <thead>
+            <tr id="thead">
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Sexo</th>
+                <th>Fecha de nacimiento</th>
+                <th>Pasaporte</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Nombre Equipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListadoJugadores)
+            {
+                <tr data-estado="@item.Estado">
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Sexo</td>
+                    <td>@item.FechaNacimiento</td>
+                    <td>@item.Pasaporte</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Estado</td>
+                    <td>@item.NombreEquipo</td>
+                    <td>
+                        @Html.ActionLink("Editar", "EditarJugador", "Practica", new { id=item.Id}, 
+                            new {@class = "badge badge-warning p-2 rounded-pill" })
+                        @Html.ActionLink("Eliminar", "EliminarJugador", "Practica", new { id=item.Id},
+                            new { @class = "badge badge-danger p-2 rounded-pill" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+   
+    (function () {
+        let table = document.querySelector("#tbl_jugadores");
+        let select = document.querySelector("#estado_jugador");
+        let table_head = document.querySelector("#thead");
+        select.addEventListener("change", function () {
+            for (row of table.rows) {
+                var trow = row.getAttribute("data-estado");
+                if (row.id != table_head.id) {
+                    if (select.value == 'Todos' || trow == select.value) {
+                        row.classList.remove("d-none");
+                    }
+                    else if (trow != select.value) {
+                        row.classList.add("d-none");
+                    }
+                }
+            }
+
+        })
+
+    })();
+
+</script>

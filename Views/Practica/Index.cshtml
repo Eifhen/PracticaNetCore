@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<section class="mt-5">
+
+
+    <div>
+        <h5>Instrucciones</h5>
+        <p>
+            Realizar un proyecto MVC de NetCore Con Entity Framework Creando las
+            migraciones y las relaciones.
+        </p>
+    </div>
+    <div class="row pl-2">
+        <div class="col-6">
+            <div class="card shadow border-0">
+                <div class="card-header border-0 bg-white pl-2">
+                    <h6>
+                        Deben crearse un modelo de Jugadores, cada uno de esos jugadores
+                        tiene:
+                    </h6>
+                </div>
+                <div class="card-body pt-0">
+                    <div>
+                        <ul>
+                            <li>Id</li>
+                            <li>Nombre</li>
+                            <li>Apellido</li>
+                            <li>Fecha de nacimiento</li>
+                            <li>Dirección</li>
+                            <li>Sexo</li>
+                            <li>ID_Equipo</li>
+                            <li>
+                                ID_Estado (Activo, Cancelado, Agente Libre)
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div>
+                        <h6>Tabla de estado</h6>
+                        <ul>
+                            <li>
+                                ID
+                            </li>
+                            <li>
+                                Nombre de estado
+                            </li>
+                            <li>
+                                Fecha de Creación
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div>
+                        <h6>Crear Modelo Equipo</h6>
+                        <ul>
+                            <li>
+                                ID
+                            </li>
+                            <li>
+                                Nombre
+                            </li>
+                            <li>
+                                País (Codigo de 3 digitos ISO3) (Dropdown)
+                            </li>
+                            <li>
+                                Estado
+                            </li>
+                            <li>
+                                Lista de Jugadores
+                            </li>
+                            <li>
+                                Fecha de Creación
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header border-0 bg-white pl-2">
+                    <h6>Tomar en cuenta:</h6>
+                    <br />
+                    <ul>
+                        <li>
+                            Tener pendiente que, un jugador corresponde a un equipo y un equipo tiene
+                            múltiples jugadores.
+                        </li>
+                        <li>
+                            Debe haber una pantalla donde se presenten todos los jugadores de
+                            un equipo presentados en múltiples estados.
+                        </li>
+                    </ul>
+                </div>
+  
+                <div class="card-body pt-0">
+                    <hr />
+                    <h6>Funcionalidades</h6>
+                    <ul>
+                        <li>
+                            Listar todos los jugadores
+                        </li>
+                        <li>
+                            Listar todos los equipos
+                        </li>
+                        <li>
+                            Crear Jugadores y Equipos
+                        </li>
+                        <li>
+                            Editar Jugadores y Equipos
+                        </li>
+                        <li>
+                            Eliminar Jugadores y Equipos
+                        </li>
+                        <li>
+                            Listar las solicitudes por estado (ej.: Ver jugadores activos)
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
